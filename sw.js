@@ -1,6 +1,6 @@
 // Sube este número cada vez que subas cambios a index.html
 // para forzar que el navegador descargue la versión nueva.
-const CACHE_VERSION = 'mientreno-v2';
+const CACHE_VERSION = 'mientreno-v3';
 const ASSETS = [
   './',
   './index.html',

@@ -990,7 +990,7 @@ function openSession(type, dateKey, dayLabel) {
 
   const isDone = saved.done;
   const btn = document.getElementById('finishBtn');
-  btn.textContent = isDone ? '✓ Sesión completada — volver a marcar' : 'Marcar sesión completada ✓';
+  btn.textContent = isDone ? '✓ Sesión completada — toca para desmarcar' : 'Marcar sesión completada ✓';
   btn.className = isDone ? 'finish-btn done-state' : 'finish-btn';
 
   // Warm-up
@@ -1128,17 +1128,28 @@ function finishSession() {
   const db = getDB();
   const k = activeSession.dateKey;
   if(!db[k]) db[k]={};
-  db[k].done = true;
   db[k].type = activeSession.type;
+
+  const wasDone = db[k].done;
+  const nowDone = !wasDone;
+  db[k].done = nowDone;
+
   let total=0;
   Object.values(db[k].exercises||{}).forEach(ex=>Object.values(ex.sets||{}).forEach(s=>{if(s.done)total++;}));
   db[k].totalSets = total;
   saveDB(db);
+
   const btn = document.getElementById('finishBtn');
-  btn.textContent = '✓ Sesión completada — volver a marcar';
-  btn.className = 'finish-btn done-state';
-  toast('¡Sesión completada! 💪');
-  setTimeout(()=>goBack(), 1100);
+  if(nowDone){
+    btn.textContent = '✓ Sesión completada — toca para desmarcar';
+    btn.className = 'finish-btn done-state';
+    toast('¡Sesión completada! 💪');
+    setTimeout(()=>goBack(), 1100);
+  } else {
+    btn.textContent = 'Marcar sesión completada ✓';
+    btn.className = 'finish-btn';
+    toast('Sesión desmarcada — puedes seguir registrando');
+  }
 }
 
 // ══════════════════════════════════════════════════
