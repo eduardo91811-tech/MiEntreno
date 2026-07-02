@@ -179,6 +179,9 @@ body {
 .ex-how ol { padding-left: 16px; display: flex; flex-direction: column; gap: 5px; }
 .ex-how li { font-size: 12px; line-height: 1.5; color: #9aa0bc; }
 .ex-tip { margin-top: 10px; padding: 8px 11px; background: rgba(236,72,153,0.07); border-left: 3px solid var(--push); border-radius: 0 6px 6px 0; font-size: 11px; color: #9aa0bc; line-height: 1.4; }
+.ex-video-link { margin-top: 10px; display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; background: var(--surface); border: 1px solid var(--border2); border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--text); text-decoration: none; }
+.ex-video-link:active { opacity: 0.7; }
+.ex-video-link .yt-ico { font-size: 13px; }
 
 /* ── SETS ── */
 .sets-log { padding: 12px 14px 14px; }
@@ -894,6 +897,10 @@ function getWeekDates(offset) {
   mon.setDate(today.getDate() - (dow === 0 ? 6 : dow - 1) + offset * 7);
   return Array.from({length:7},(_,i)=>{ const d=new Date(mon); d.setDate(mon.getDate()+i); return d; });
 }
+function videoSearchUrl(exerciseName) {
+  const q = encodeURIComponent(`${exerciseName} técnica correcta`);
+  return `https://www.youtube.com/results?search_query=${q}`;
+}
 function toast(msg) {
   const el = document.getElementById('toast');
   el.textContent = msg;
@@ -1028,6 +1035,7 @@ function openSession(type, dateKey, dayLabel) {
           <h4>Cómo ejecutarlo</h4>
           <ol>${ex.instructions.map(i=>`<li>${i}</li>`).join('')}</ol>
           <div class="ex-tip">⚡ ${ex.tip}</div>
+          <a class="ex-video-link" href="${videoSearchUrl(ex.name)}" target="_blank" rel="noopener"><span class="yt-ico">▶️</span> Ver videos de técnica</a>
         </div>
         <div class="sets-log">
           <div class="sets-log-head">
